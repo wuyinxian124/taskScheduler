@@ -25,8 +25,29 @@
 7. 查看日志方便  
 8. 任务配置支持多版本  
 9. 有系统配置后台  
+10. 能够查询任务血缘  
 
 ### 2. 设计思路
 ##### 2.1 系统结构
 
-##### 2.2 模块介绍 
+系统模块结构（初步）  
+![系统结构](./image/design0.png)  
+
+系统核心包括API，TaskManager,Loader,Runner。数据存储Mysql ，为了支持千万级以上的任务实例，任务实例数据放HBase
+
+##### 2.2 模块概要
+**API**  
+api 对外提供操作接口，后期需要加一个AdminService 用来提供后台管理接口，API 直接mysql以及通过RPC访问TaskManager  
+
+**TaskManger**  
+主要负责任务调度，期望类似yarn 中央调度器和状态机来处理任务和任务实例的状态转移。 
+
+**loader**  
+loader 类似yarn 的nodemanger ，通过心跳维持跟TaskManager 的连接，通过pull的方式来请求需要执行的任务实例  
+
+**runner**  
+具体执行的任务实例是一个具体的进程（Runner），也可以是docker 
+
+ 
+
+ 
